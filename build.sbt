@@ -35,7 +35,7 @@ libraryDependencies ++= {
   )
 }
 
-mainClass in (Compile, run) := Some("co.s4n.main.Main")
+mainClass in (Compile, run) := Some("co.edu.eafit.dis.st1607.carpetaciudadana.main.Main")
 
 assemblyJarName in assembly := s"${name.value}_${scalaBinaryVersion.value}-${(version in ThisBuild).value}.jar"
 
