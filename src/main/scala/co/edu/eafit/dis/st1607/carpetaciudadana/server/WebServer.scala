@@ -5,11 +5,16 @@ import akka.actor.ActorSystem
 import akka.event.{LogSource, Logging}
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
-import akka.http.scaladsl.server.{Route, RouteResult}
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.settings.RoutingSettings
 import akka.stream.ActorMaterializer
 import co.edu.eafit.dis.st1607.carpetaciudadana.config.CarpetaCiudadanaConfig
-import co.edu.eafit.dis.st1607.carpetaciudadana.routes.{ConfigRoutes, RootRoutes}
+import co.edu.eafit.dis.st1607.carpetaciudadana.routes.{
+  CarpetaCiudadanaRoutes,
+  ConfigRoutes,
+  RootRoutes
+}
 import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -77,18 +82,17 @@ class WebServer {
   implicit val executionContext: ExecutionContext = actorSystem.dispatcher
 
   implicit val rs: RoutingSettings = RoutingSettings(actorSystem)
-  implicit val r2h                 = RouteResult.route2HandlerFlow _
 
   val log = Logging(actorSystem, this)
 
-  var (simpleScalaRestApiConfig, routes, bindingFuture) = start()
+  var (carpetaCiudadanaConfig, routes, bindingFuture) = start()
 
   def restart() {
     log.debug("Server restart")
     unbind()
-    ConfigFactory.invalidateCaches
+    ConfigFactory.invalidateCaches()
     val (s, r, b) = start()
-    this.simpleScalaRestApiConfig = s
+    this.carpetaCiudadanaConfig = s
     this.routes = r
     this.bindingFuture = b
   }
@@ -100,15 +104,16 @@ class WebServer {
 
   def start(): Tuple3[CarpetaCiudadanaConfig, Route, Future[ServerBinding]] = {
     log.debug("Server started")
-    var simpleScalaRestApiConfig = WebServer.loadConfiguration()
+    var carpetaCiudadanaConfig = WebServer.loadConfiguration()
     var routes =
-      ConfigRoutes.routes(simpleScalaRestApiConfig, this) ~
-        GameRoutes.routes(simpleScalaRestApiConfig) ~
+      ConfigRoutes.routes(carpetaCiudadanaConfig, this) ~
+        CarpetaCiudadanaRoutes.routes(carpetaCiudadanaConfig) ~
         RootRoutes.routes
-    var binding = Http().bindAndHandle(routes,
-                                       simpleScalaRestApiConfig.serverIp,
-                                       simpleScalaRestApiConfig.serverPort)
-    (simpleScalaRestApiConfig, routes, binding)
+    var binding = Http()
+      .newServerAt(carpetaCiudadanaConfig.serverIp, carpetaCiudadanaConfig.serverPort)
+      .bindFlow(routes)
+
+    (carpetaCiudadanaConfig, routes, binding)
   }
 
   def shutdown(): Unit = {

@@ -7,8 +7,11 @@ import scala.concurrent.Future
 
 trait CiudadanoRepository {
   def insertar(ciudadano: Ciudadano)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]]
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]]
 
   def actualizar(ciudadano: Ciudadano)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]]
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]]
+
+  def obtener(id: Int)(
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]]
 }

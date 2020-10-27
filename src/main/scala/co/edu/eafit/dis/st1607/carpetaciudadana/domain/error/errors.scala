@@ -6,6 +6,8 @@ trait AppError
 
 sealed trait DomainErrorMessage extends AppError
 
+case class CiudadanoNoValido(message: String) extends DomainErrorMessage
+
 // Infrastructure Errors
 
 sealed trait InfrastructureErrorMessage extends AppError

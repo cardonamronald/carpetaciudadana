@@ -14,7 +14,7 @@ libraryDependencies ++= {
 
   val configVersion           = "1.3.2"
   val akkaVersion             = "2.5.19"
-  val akkaHttpVersion         = "10.1.7"
+  val akkaHttpVersion         = "10.2.1"
   val akkaStreamVersion       = "2.5.19"
   val scalaJava8CompatVersion = "0.9.0"
   val postgresqlVersion       = "42.2.5"

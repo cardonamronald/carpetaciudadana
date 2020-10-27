@@ -7,8 +7,8 @@ import scala.concurrent.Future
 
 trait DocumentoRepository {
   def insert(documento: Documento)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]]
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]]
 
   def update(documento: Documento)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]]
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]]
 }
