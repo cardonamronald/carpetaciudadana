@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 object DocumentoRepository extends DocumentoRepository {
   override def insert(documento: Documento)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] = {
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] = {
     val connection = DatabaseConnection.databaseConnection(config)
     val statement  = connection.createStatement()
 
@@ -28,7 +28,7 @@ object DocumentoRepository extends DocumentoRepository {
   }
 
   override def update(documento: Documento)(
-      config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] = {
+      implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] = {
     val connection = DatabaseConnection.databaseConnection(config)
     val statement  = connection.createStatement()
 

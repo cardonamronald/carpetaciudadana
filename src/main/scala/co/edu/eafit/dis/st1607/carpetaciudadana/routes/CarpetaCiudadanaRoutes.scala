@@ -51,7 +51,8 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
                         onSuccess(writeResult) { result =>
                           result.status match {
                             case Success(_) =>
-                              onSuccess(CarpetaCiudadanaService.registrarDocumento(documentoDTO, "/tmp" + fileInfo.fileName)) {
+                              onSuccess(CarpetaCiudadanaService
+                                .registrarDocumento(documentoDTO, "/tmp" + fileInfo.fileName)) {
                                 case Left(error)      => complete(error)
                                 case Right(documento) => complete(documento)
                               }

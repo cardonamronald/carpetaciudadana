@@ -75,9 +75,8 @@ object WebServer {
 }
 
 class WebServer {
-
   implicit val actorSystem: ActorSystem =
-    ActorSystem("webserver", ConfigFactory.load().getConfig("ssra.web-server-pool"))
+    ActorSystem("SingleRequest", ConfigFactory.load().getConfig("ssra.web-server-pool"))
   implicit val mat: ActorMaterializer             = ActorMaterializer()
   implicit val executionContext: ExecutionContext = actorSystem.dispatcher
 

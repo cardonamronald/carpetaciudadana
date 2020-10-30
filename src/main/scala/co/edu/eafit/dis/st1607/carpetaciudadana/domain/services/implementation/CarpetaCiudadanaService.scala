@@ -24,7 +24,7 @@ object CarpetaCiudadanaService extends CarpetaCiudadanaService {
     insertarCiudadano(ciudadanoDTO) flatMap { either =>
       either.fold(
         error => Future.successful(Left(error)),
-        ciudadano => validarCiudadano(ciudadano)
+        ciudadano => validarCiudadano(ciudadano) // TODO falta llamar al registerCitizen
       )
     }
 
@@ -40,7 +40,7 @@ object CarpetaCiudadanaService extends CarpetaCiudadanaService {
 
   private def validarCiudadano(ciudadano: Ciudadano)(
       implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Ciudadano]] =
-    HttpService.get(String.format(validateCitizen, ciudadano.id)) flatMap { either =>
+    HttpService.get(String.format(validateCitizen, ciudadano.id.toString)) flatMap { either =>
       either fold (
         error => Future.successful(Left(error)),
         valido => CiudadanoRepository.actualizar(ciudadano.copy(valido = valido))
@@ -54,6 +54,9 @@ object CarpetaCiudadanaService extends CarpetaCiudadanaService {
   override def registrarDocumento(documentoDTO: DocumentoDTO, path: String)(
       implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] =
     ???
+
+
+
 
 
   // 1. Guardar documento en S3

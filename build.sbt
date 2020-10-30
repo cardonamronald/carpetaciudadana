@@ -1,5 +1,5 @@
 lazy val root = (project in file(".")).settings(
-  name := "simple-scala-rest-api",
+  name := "carpeta-ciudadana",
   version in ThisBuild := sys.env.get("APP_VER").getOrElse("0.0.0"),
   scalaVersion := "2.12.7",
   test in assembly := {}
@@ -13,16 +13,23 @@ resolvers ++= Seq(
 libraryDependencies ++= {
 
   val configVersion           = "1.3.2"
-  val akkaVersion             = "2.5.19"
+  val akkaVersion             = "2.6.10"
   val akkaHttpVersion         = "10.2.1"
-  val akkaStreamVersion       = "2.5.19"
+  val akkaStreamVersion       = "2.6.10"
   val scalaJava8CompatVersion = "0.9.0"
   val postgresqlVersion       = "42.2.5"
   val sprayVersion            = "1.3.5"
+  val azureStorageVersion     = "12.8.0"
+  val apacheCommons           = "2.8.0"
+  val json4SVersion           = "3.6.7"
+  val slf4jVersion            = "1.7.30"
+  val logbackVersion          = "1.2.3"
 
   val scalaTestVersion = "3.0.5"
 
   Seq(
+    "commons-io"             % "commons-io"            % apacheCommons,
+    "com.azure"              % "azure-storage-blob"    % azureStorageVersion,
     "com.typesafe"           % "config"                % configVersion,
     "com.typesafe.akka"      %% "akka-actor"           % akkaVersion,
     "com.typesafe.akka"      %% "akka-http"            % akkaHttpVersion,
@@ -31,7 +38,9 @@ libraryDependencies ++= {
     "io.spray"               %% "spray-json"           % sprayVersion,
     "org.scala-lang.modules" %% "scala-java8-compat"   % scalaJava8CompatVersion,
     "org.postgresql"         % "postgresql"            % postgresqlVersion,
-    "org.scalatest"          % "scalatest_2.12"        % scalaTestVersion % "test"
+    "org.scalatest"          % "scalatest_2.12"        % scalaTestVersion % "test",
+    "ch.qos.logback"         % "logback-classic"       % logbackVersion,
+  "org.slf4j"              % "slf4j-api"             % slf4jVersion,
   )
 }
 

@@ -2,13 +2,16 @@ package co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error.{AppError, DatabaseError, HttpError}
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.model.{Ciudadano, Documento}
-import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.dto.{CiudadanoDTO, DocumentoDTO}
+import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.dto.{CiudadanoDTO, DocumentoDTO, RegistroCiudadanoDTO}
 import spray.json.{DefaultJsonProtocol, JsValue, _}
 
+
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
+
   // DTO
   implicit val ciudadanoDTOFormat = jsonFormat4(CiudadanoDTO.apply)
-  implicit val documentoDTOFormat = jsonFormat3(DocumentoDTO.apply)
+  implicit val documentoDTOFormat = jsonFormat2(DocumentoDTO.apply)
+  implicit val registroCiudadanoDTO = jsonFormat6(RegistroCiudadanoDTO.apply)
 
   // Domain
   implicit val documentoFormat = jsonFormat5(Documento.apply)
@@ -19,7 +22,7 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val httpErrorFortmat    = jsonFormat2(HttpError)
 
   implicit val appErrorFormat: RootJsonFormat[AppError] = new RootJsonFormat[AppError] {
-    override def read(json: JsValue): AppError = JsonReader[AppError]
+    override def read(json: JsValue): AppError = json.asInstanceOf[AppError]
 
     override def write(obj: AppError): JsValue = obj match {
       case a: DatabaseError => a.toJson
