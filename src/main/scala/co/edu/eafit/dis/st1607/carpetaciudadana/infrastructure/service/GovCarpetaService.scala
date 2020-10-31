@@ -1,7 +1,8 @@
 package co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.service
 
+import akka.http.scaladsl.model.StatusCodes
 import co.edu.eafit.dis.st1607.carpetaciudadana.config.CarpetaCiudadanaConfig
-import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error.{AppError, CiudadanoNoValido}
+import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error.{AppError, HttpError}
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.model.{Ciudadano, Documento}
 import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.JsonSupport
 import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.dto.RegistroCiudadanoDTO
@@ -51,6 +52,9 @@ object GovCarpetaService extends JsonSupport {
                      registerCitizen) map (either =>
       either flatMap { result =>
         if (result) Right(ciudadano)
-        else Left(CiudadanoNoValido("No se pudo registrar el ciudadano"))
+        else
+          Left(
+            HttpError("No se pudo registrar el ciudadano",
+                      StatusCodes.InternalServerError.intValue))
       })
 }

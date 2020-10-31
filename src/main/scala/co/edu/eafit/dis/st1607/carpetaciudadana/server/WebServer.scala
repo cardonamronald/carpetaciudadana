@@ -17,6 +17,7 @@ import co.edu.eafit.dis.st1607.carpetaciudadana.routes.{
 }
 import com.typesafe.config.{Config, ConfigFactory}
 
+import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
@@ -121,7 +122,6 @@ class WebServer {
   def shutdown(): Unit = {
     log.debug("Server shutdown")
     bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => actorSystem.terminate()) // and shutdown when done
   }
 

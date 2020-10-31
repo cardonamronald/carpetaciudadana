@@ -8,6 +8,8 @@ sealed trait DomainErrorMessage extends AppError
 
 case class CiudadanoNoValido(message: String) extends DomainErrorMessage
 
+case class CiudadanoYaExiste(message: String) extends DomainErrorMessage
+
 // Infrastructure Errors
 
 sealed trait InfrastructureErrorMessage extends AppError

@@ -19,7 +19,7 @@ object CiudadanoRepository extends CiudadanoRepository {
 
     Future(statement.execute("INSERT INTO ciudadanos(id, name, address, email, valido) " +
       s"VALUES (${ciudadano.id}, '${ciudadano.name}', '${ciudadano.address}', '${ciudadano.email}', ${ciudadano.valido})"))
-      .map (_ => Right(ciudadano))
+      .map(_ => Right(ciudadano))
       .recover {
         case th => Left(DatabaseError("Error creando el ciudadano", th.getMessage))
       }
@@ -59,7 +59,9 @@ object CiudadanoRepository extends CiudadanoRepository {
       statement.executeQuery(
         s"SELECT * FROM ciudadanos WHERE id = $id"
       )
-    ) map { resultSet =>
+    ) flatMap { resultSet =>
+      Future(resultSet.next()).map(_ => resultSet)
+    } map { resultSet =>
       Ciudadano(
         resultSet.getInt("id"),
         resultSet.getString("name"),

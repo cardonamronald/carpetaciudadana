@@ -24,16 +24,18 @@ trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val httpErrorFortmat        = jsonFormat2(HttpError)
   implicit val ciudadanoNoValidoFormat = jsonFormat1(CiudadanoNoValido)
   implicit val couldntUploadFileFormat = jsonFormat1(CouldNotUploadFile)
+  implicit val ciudadanoYaExisteFormat = jsonFormat1(CiudadanoYaExiste)
 
   // This format fallbacks to each of the specific Error's format
   implicit val appErrorFormat: RootJsonFormat[AppError] = new RootJsonFormat[AppError] {
     override def read(json: JsValue): AppError = json.asInstanceOf[AppError]
 
     override def write(obj: AppError): JsValue = obj match {
-      case a: DatabaseError      => a.toJson
-      case b: HttpError          => b.toJson
-      case c: CiudadanoNoValido  => c.toJson
-      case d: CouldNotUploadFile => d.toJson
+      case databaseError: DatabaseError    => databaseError.toJson
+      case httpError: HttpError            => httpError.toJson
+      case domainError: CiudadanoNoValido  => domainError.toJson
+      case domainError: CouldNotUploadFile => domainError.toJson
+      case domainError: CiudadanoYaExiste  => domainError.toJson
     }
   }
 }

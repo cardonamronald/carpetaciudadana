@@ -6,12 +6,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.scaladsl.FileIO
 import co.edu.eafit.dis.st1607.carpetaciudadana.config.CarpetaCiudadanaConfig
-import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error.{
-  CiudadanoNoValido,
-  CouldNotUploadFile,
-  DatabaseError,
-  HttpError
-}
+import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error._
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.services.implementation.CarpetaCiudadanaService
 import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.JsonSupport
 import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.dto.{CiudadanoDTO, DocumentoDTO}
@@ -28,7 +23,8 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
               error match {
                 case CiudadanoNoValido(_)     => complete(StatusCodes.NotAcceptable, error)
                 case HttpError(_, statusCode) => complete(statusCode, error)
-                case DatabaseError(_, _)         => complete(StatusCodes.InternalServerError, error)
+                case DatabaseError(_, _)      => complete(StatusCodes.InternalServerError, error)
+                case CiudadanoYaExiste(_)     => complete(StatusCodes.InternalServerError, error)
                 case _                        => complete(StatusCodes.InternalServerError, error)
               }
             case Right(ciudadano) => complete(ciudadano)
@@ -43,7 +39,7 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
               error match {
                 case CiudadanoNoValido(_)     => complete(StatusCodes.NotAcceptable, error)
                 case HttpError(_, statusCode) => complete(statusCode, error)
-                case DatabaseError(_, _)         => complete(StatusCodes.InternalServerError, error)
+                case DatabaseError(_, _)      => complete(StatusCodes.InternalServerError, error)
                 case _                        => complete(StatusCodes.InternalServerError, error)
               }
             case Right(ciudadano) => complete(ciudadano)
