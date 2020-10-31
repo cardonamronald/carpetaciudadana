@@ -18,7 +18,7 @@ object CiudadanoRepository extends CiudadanoRepository {
     val statement  = connection.createStatement()
 
     Future(statement.execute("INSERT INTO ciudadanos(id, name, address, email, valido) " +
-      s"VALUES (${ciudadano.id}, ${ciudadano.name}, ${ciudadano.address}, ${ciudadano.email}, false)"))
+      s"VALUES (${ciudadano.id}, ${ciudadano.name}, ${ciudadano.address}, ${ciudadano.email}, ${ciudadano.valido}])"))
       .map {
         case true  => Right(ciudadano)
         case false => Left(DatabaseError("Error insertando el ciudadano"))

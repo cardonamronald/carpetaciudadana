@@ -21,7 +21,6 @@ libraryDependencies ++= {
   val sprayVersion            = "1.3.5"
   val azureStorageVersion     = "12.8.0"
   val apacheCommons           = "2.8.0"
-  val json4SVersion           = "3.6.7"
   val slf4jVersion            = "1.7.30"
   val logbackVersion          = "1.2.3"
 
@@ -40,7 +39,7 @@ libraryDependencies ++= {
     "org.postgresql"         % "postgresql"            % postgresqlVersion,
     "org.scalatest"          % "scalatest_2.12"        % scalaTestVersion % "test",
     "ch.qos.logback"         % "logback-classic"       % logbackVersion,
-  "org.slf4j"              % "slf4j-api"             % slf4jVersion,
+    "org.slf4j"              % "slf4j-api"             % slf4jVersion
   )
 }
 
