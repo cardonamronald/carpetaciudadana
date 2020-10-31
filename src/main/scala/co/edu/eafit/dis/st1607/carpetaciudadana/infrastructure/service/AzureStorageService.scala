@@ -7,7 +7,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.commons.io.FilenameUtils
 
-object AzureStorageService extends App with JsonSupport {
+object AzureStorageService extends JsonSupport {
   private val conf: Config     = ConfigFactory.load
   private val connectionString = conf.getString("azure.connection")
   private val blobServiceClient: BlobServiceClient =
