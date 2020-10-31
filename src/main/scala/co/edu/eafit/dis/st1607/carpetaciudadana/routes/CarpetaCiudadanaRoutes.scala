@@ -47,11 +47,11 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
         }
       } ~
       path("documento" / "registrar") {
-        (post & entity(as[DocumentoDTO])) { documentoDTO =>
-          extractRequestContext { ctx =>
-            {
-              implicit val materializer = ctx.materializer
-              implicit val ec           = ctx.executionContext
+        extractRequestContext { ctx =>
+          {
+            implicit val materializer = ctx.materializer
+            implicit val ec           = ctx.executionContext
+            formFields("idCiudadano".as[Int], "titulo") { (idCiudadano, titulo) =>
               fileUpload("documento") {
                 case (fileInfo, fileStream) =>
                   val sink        = FileIO.toPath(Paths.get("/tmp") resolve fileInfo.fileName)
@@ -59,8 +59,10 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
                   onSuccess(writeResult) { result =>
                     result.status match {
                       case Success(_) =>
-                        onSuccess(CarpetaCiudadanaService
-                          .registrarDocumento(documentoDTO, "/tmp" + fileInfo.fileName)) {
+                        onSuccess(
+                          CarpetaCiudadanaService
+                            .registrarDocumento(DocumentoDTO(idCiudadano, titulo),
+                                                "/tmp/" + fileInfo.fileName)) {
                           case Left(error) =>
                             error match {
                               case CiudadanoNoValido(_) =>
@@ -72,6 +74,7 @@ object CarpetaCiudadanaRoutes extends JsonSupport {
                             }
                           case Right(documento) => complete(documento)
                         }
+
                       case Failure(e) =>
                         complete(StatusCodes.BadRequest, CouldNotUploadFile(e.getMessage))
                     }

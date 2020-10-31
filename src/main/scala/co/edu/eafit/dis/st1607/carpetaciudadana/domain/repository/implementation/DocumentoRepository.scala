@@ -32,7 +32,7 @@ object DocumentoRepository extends DocumentoRepository {
         "UPDATE documentos SET " +
           s"url = '${documento.url}', " +
           s"autenticado = ${documento.autenticado} " +
-          s"WHERE id = ${documento.id}"))
+          s"WHERE id = '${documento.id}'"))
       .map { n =>
         if (n > 0) Right(documento)
         else
