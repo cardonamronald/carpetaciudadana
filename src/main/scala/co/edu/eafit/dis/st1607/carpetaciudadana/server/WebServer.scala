@@ -36,6 +36,7 @@ object WebServer {
     val databaseSslEnabled = getConfigurationBoolean("ssra.database.ssl_enabled", conf)
     val serverIp           = getConfigurationString("ssra.server.ip", conf)
     val serverPort         = getConfigurationInt("ssra.server.port", conf)
+    val appVersion         = getConfigurationString("ssra.version", conf)
 
     CarpetaCiudadanaConfig(
       databaseDriver,
@@ -46,7 +47,8 @@ object WebServer {
       databasePassword,
       databaseSslEnabled,
       serverIp,
-      serverPort
+      serverPort,
+      appVersion
     )
   }
 
@@ -68,6 +70,7 @@ object WebServer {
       case Failure(e) => throw e
     }
 
+  // Logger
   implicit val logSource: LogSource[AnyRef] = new LogSource[AnyRef] {
     def genString(o: AnyRef): String           = o.getClass.getName
     override def getClazz(o: AnyRef): Class[_] = o.getClass

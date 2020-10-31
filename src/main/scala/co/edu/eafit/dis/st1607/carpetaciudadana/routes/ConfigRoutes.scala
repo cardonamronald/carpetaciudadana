@@ -18,6 +18,12 @@ object ConfigRoutes {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, ConfigService.serve(conf)))
 
         }
+      } ~
+      get {
+        path("version") {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, ConfigService.version(conf)))
+
+        }
       }
   }
 }

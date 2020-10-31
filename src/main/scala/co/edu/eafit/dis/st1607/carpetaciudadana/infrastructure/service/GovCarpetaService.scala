@@ -3,13 +3,14 @@ package co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.service
 import co.edu.eafit.dis.st1607.carpetaciudadana.config.CarpetaCiudadanaConfig
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.error.{AppError, CiudadanoNoValido}
 import co.edu.eafit.dis.st1607.carpetaciudadana.domain.model.{Ciudadano, Documento}
+import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.JsonSupport
 import co.edu.eafit.dis.st1607.carpetaciudadana.infrastructure.dto.RegistroCiudadanoDTO
 import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object GovCarpetaService {
+object GovCarpetaService extends JsonSupport {
   private val conf: Config = ConfigFactory.load
 
   private val base                 = conf.getString("govcarpeta.base")
@@ -30,11 +31,13 @@ object GovCarpetaService {
   def autenticarDocumento(documento: Documento)(
       implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] =
     HttpService.get(
-      String.format(authenticateDocument, documento.id, documento.url, documento.titulo)) map {
-      either =>
-        either map (
-            autenticado => documento.copy(autenticado = autenticado)
-        )
+      String.format(authenticateDocument,
+                    documento.idCiudadano.toString,
+                    documento.url,
+                    documento.titulo)) map { either =>
+      either map (
+          autenticado => documento.copy(autenticado = autenticado)
+      )
     }
 
   def registrarCiudadano(ciudadano: Ciudadano)(

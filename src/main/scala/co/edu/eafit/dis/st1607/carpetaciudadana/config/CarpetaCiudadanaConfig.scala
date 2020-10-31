@@ -9,7 +9,8 @@ class CarpetaCiudadanaConfig(
     val databasePassword: String,
     val databaseSslEnabled: Boolean,
     val serverIp: String,
-    val serverPort: Int
+    val serverPort: Int,
+    val appVersion: String
 ) {
   override def toString: String = {
     f"""databaseDriver: $databaseDriver
@@ -21,6 +22,7 @@ class CarpetaCiudadanaConfig(
         databaseSslEnabled: $databaseSslEnabled
         serverIp: $serverIp
         serverPort: $serverPort
+        appVersion: $appVersion
       """
   }
 }
@@ -40,7 +42,8 @@ object CarpetaCiudadanaConfig {
       databasePassword: String,
       databaseSslEnabled: Boolean,
       serverIp: String,
-      serverPort: Int
+      serverPort: Int,
+      appVersion: String
   ): CarpetaCiudadanaConfig =
     new CarpetaCiudadanaConfig(
       databaseDriver,
@@ -51,6 +54,7 @@ object CarpetaCiudadanaConfig {
       databasePassword,
       databaseSslEnabled,
       serverIp,
-      serverPort
+      serverPort,
+      appVersion
     )
 }

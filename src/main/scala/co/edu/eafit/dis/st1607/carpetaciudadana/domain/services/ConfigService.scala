@@ -12,4 +12,8 @@ object ConfigService {
     server.restart
     "OK"
   }
+
+  def version(config: CarpetaCiudadanaConfig): String = {
+    s"""${config.appVersion}"""
+  }
 }

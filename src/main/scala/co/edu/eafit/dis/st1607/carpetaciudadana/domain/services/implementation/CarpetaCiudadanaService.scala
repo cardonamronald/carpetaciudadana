@@ -60,7 +60,7 @@ object CarpetaCiudadanaService extends CarpetaCiudadanaService {
 
   private def cargarDocumento(documentoDTO: DocumentoDTO, path: String)(
       implicit config: CarpetaCiudadanaConfig): Future[Either[AppError, Documento]] = {
-    obtenerCiudadano(Integer.parseInt(documentoDTO.idCiudadano)) map { either =>
+    obtenerCiudadano(documentoDTO.idCiudadano) map { either =>
       either.map(
         ciudadano =>
           AzureStorageService.uploadFile(Documento(UUID.randomUUID().toString,

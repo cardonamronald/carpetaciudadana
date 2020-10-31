@@ -14,4 +14,6 @@ sealed trait InfrastructureErrorMessage extends AppError
 
 case class HttpError(message: String, statusCode: Int) extends InfrastructureErrorMessage
 
-case class DatabaseError(message: String) extends InfrastructureErrorMessage
+case class DatabaseError(message: String, trace: String) extends InfrastructureErrorMessage
+
+case class CouldNotUploadFile(message: String) extends InfrastructureErrorMessage

@@ -18,13 +18,10 @@ object CiudadanoRepository extends CiudadanoRepository {
     val statement  = connection.createStatement()
 
     Future(statement.execute("INSERT INTO ciudadanos(id, name, address, email, valido) " +
-      s"VALUES (${ciudadano.id}, ${ciudadano.name}, ${ciudadano.address}, ${ciudadano.email}, ${ciudadano.valido}])"))
-      .map {
-        case true  => Right(ciudadano)
-        case false => Left(DatabaseError("Error insertando el ciudadano"))
-      }
+      s"VALUES (${ciudadano.id}, '${ciudadano.name}', '${ciudadano.address}', '${ciudadano.email}', ${ciudadano.valido})"))
+      .map (_ => Right(ciudadano))
       .recover {
-        case th => Left(DatabaseError(th.getMessage))
+        case th => Left(DatabaseError("Error creando el ciudadano", th.getMessage))
       }
   }
 
@@ -36,20 +33,20 @@ object CiudadanoRepository extends CiudadanoRepository {
     Future(
       statement.executeUpdate(
         "UPDATE ciudadanos " +
-          s"SET name = ${ciudadano.name}, " +
-          s"address = ${ciudadano.address}, " +
-          s"email = ${ciudadano.email}, " +
+          s"SET name = '${ciudadano.name}', " +
+          s"address = '${ciudadano.address}', " +
+          s"email = '${ciudadano.email}', " +
           s"valido = ${ciudadano.valido} " +
           s"WHERE id = ${ciudadano.id}"))
       .map { n =>
         if (n > 0) Right(ciudadano)
         else
           Left(
-            DatabaseError(
-              s"No se pudo actualizar el ciudadano ${ciudadano.id}. Filas actualizadas: $n"))
+            DatabaseError(s"No se pudo actualizar el ciudadano ${ciudadano.id}.",
+                          s"Filas actualizadas: $n"))
       }
       .recover {
-        case th => Left(DatabaseError(th.getMessage))
+        case th => Left(DatabaseError("Error creando el ciudadano", th.getMessage))
       }
   }
 
@@ -76,7 +73,7 @@ object CiudadanoRepository extends CiudadanoRepository {
         Right(ciudadano.copy(documentos = docs))
       }
     } recover {
-      case th => Left(DatabaseError(th.getMessage))
+      case th => Left(DatabaseError("Error consultando el ciudadano", th.getMessage))
     }
   }
 

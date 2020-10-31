@@ -1,6 +1,6 @@
 lazy val root = (project in file(".")).settings(
   name := "carpeta-ciudadana",
-  version in ThisBuild := sys.env.get("APP_VER").getOrElse("0.0.0"),
+  version in ThisBuild := sys.env.get("APP_VER").getOrElse("1.0.0"),
   scalaVersion := "2.12.7",
   test in assembly := {}
 )
