@@ -3,7 +3,7 @@ version: '2.1'
 services:
   app:
     container_name: carpeta-ciudadana
-    image: carpeta-ciudadana:1.0.0
+    image: ronaldkm98/carpeta-ciudadana:1.0.0
     ports:
       - "8080:8080"
     depends_on:
