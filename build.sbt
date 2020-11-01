@@ -10,6 +10,8 @@ resolvers ++= Seq(
   Resolver.bintrayRepo("lonelyplanet", "maven")
 )
 
+dockerBaseImage       := "openjdk:jre-alpine"
+
 libraryDependencies ++= {
 
   val configVersion           = "1.3.2"
@@ -45,7 +47,7 @@ libraryDependencies ++= {
 
 enablePlugins(JavaAppPackaging)
 enablePlugins(DockerPlugin)
-enablePlugins(JavaServerAppPackaging)
+enablePlugins(AshScriptPlugin)
 
 mainClass in (Compile, run) := Some("co.edu.eafit.dis.st1607.carpetaciudadana.main.Main")
 
