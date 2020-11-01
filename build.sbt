@@ -1,7 +1,7 @@
 lazy val root = (project in file(".")).settings(
   name := "carpeta-ciudadana",
   version in ThisBuild := sys.env.get("APP_VER").getOrElse("1.0.0"),
-  scalaVersion := "2.12.7",
+  scalaVersion := "2.13.0",
   test in assembly := {}
 )
 
@@ -42,6 +42,10 @@ libraryDependencies ++= {
     "org.slf4j"              % "slf4j-api"             % slf4jVersion
   )
 }
+
+enablePlugins(JavaAppPackaging)
+enablePlugins(DockerPlugin)
+enablePlugins(JavaServerAppPackaging)
 
 mainClass in (Compile, run) := Some("co.edu.eafit.dis.st1607.carpetaciudadana.main.Main")
 
