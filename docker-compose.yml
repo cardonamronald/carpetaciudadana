@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:12.2
+    image: ronaldkm98/postgresql:1.0.1
     restart: on-failure
     environment:
       - POSTGRES_PASSWORD=Prueba123*

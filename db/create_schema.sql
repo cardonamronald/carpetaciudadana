@@ -1,10 +1,4 @@
-CREATE DATABASE carpetaciudadana
-    WITH
-    OWNER = postgres
-    ENCODING = 'UTF8'
-    CONNECTION LIMIT = -1;
-
-CREATE TABLE ciudadanos (
+CREATE TABLE IF NOT EXISTS ciudadanos (
     id integer,
     name varchar(100),
     address varchar(200),
@@ -13,7 +7,7 @@ CREATE TABLE ciudadanos (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE documentos (
+CREATE TABLE IF NOT EXISTS documentos (
     id varchar(100),
     idCiudadano integer,
     url varchar(500),
