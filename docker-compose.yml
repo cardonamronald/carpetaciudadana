@@ -10,10 +10,14 @@ services:
       - db
   db:
     image: postgres:12.2
-    command: postgres -c 'max_connections=10000'
-    ports:
-      - "5432:5432"
+    restart: on-failure
     environment:
       - POSTGRES_PASSWORD=Prueba123*
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=postgres
     volumes:
-    - ./data:/data/db
+      - ${WEBAPP_STORAGE_HOME}/postgres_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    command: postgres
