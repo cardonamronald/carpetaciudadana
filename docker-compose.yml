@@ -1,13 +1,14 @@
-version: '2.1'
-
+version: "3.3"
 services:
   app:
     container_name: carpeta-ciudadana
     image: ronaldkm98/carpeta-ciudadana:1.0.0
     ports:
       - "8080:8080"
-    depends_on:
+    links:
       - db
+    networks:
+      - backend
   db:
     image: ronaldkm98/postgresql:1.0.1
     restart: on-failure
@@ -15,9 +16,14 @@ services:
       - POSTGRES_PASSWORD=Prueba123*
       - POSTGRES_USER=postgres
       - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=carpetaciudadana
     volumes:
       - ${WEBAPP_STORAGE_HOME}/postgres_data:/var/lib/postgresql
     ports:
       - "5432:5432"
+    networks:
+      - backend
     command: postgres
+networks:
+  backend:
+    driver: "bridge"
